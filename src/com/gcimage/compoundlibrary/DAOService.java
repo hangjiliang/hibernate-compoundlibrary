@@ -43,7 +43,7 @@ public class DAOService {
 		List compoundRecords = null;
 		try{
 			tx = session.beginTransaction();
-			compoundRecords = session.createQuery("FROM Compound_Record").list();
+			compoundRecords = session.createQuery("FROM CompoundRecordEntity").list();
 			tx.commit();
 		}catch(HibernateException e){
 			e.printStackTrace();
