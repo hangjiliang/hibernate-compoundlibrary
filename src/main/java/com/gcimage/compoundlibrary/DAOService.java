@@ -107,12 +107,12 @@ public class DAOService {
 		CompoundRecord record = null;
 		try{
 			tx = session.beginTransaction();
-			record  = (CompoundRecord) session.get(CompoundRecord.class, compoundRecord.get_name());
+			record  = (CompoundRecord) session.get(CompoundRecord.class, compoundRecord.getName());
 			if(record != null){
-				record.set_cas(compoundRecord.get_cas());
-				record.set_description(compoundRecord.get_description());
-				record.set_formula(compoundRecord.get_formula());
-				record.set_molWt(compoundRecord.get_molWt());
+				record.setCas(compoundRecord.getCas());
+				record.setDescription(compoundRecord.getDescription());
+				record.setFormula(compoundRecord.getFormula());
+				record.setMolWt(compoundRecord.getMolWt());
 				session.update(record);
 			}else{
 				session.save(compoundRecord);

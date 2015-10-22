@@ -1,5 +1,9 @@
 package com.gcimage.compoundlibrary.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -7,91 +11,90 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table (name="ATTRIBUTE")
 public class Attribute {
-	@Column (name = "Id")
+	@Column (name = "Attribute_Id")
 	@Id
 	@GeneratedValue
-	private long _id;
+	private long id;
 	
 	@Column (name = "Description")
-	private String _description;
+	private String description;
 	
 	@Column (name = "Unit")
-	private String _unit;
+	private String unit;
 	
 	@Column (name = "Range")
-	private String _range;
+	private String range;
 	
 	@Column (name = "Type")
-	private int _type;
+	private int type;
 	
 	@Column (name = "Name")
-	private String _name;
+	private String name;
 	
-	@ManyToOne (fetch = FetchType.LAZY)
-	@JoinColumn(name="Compound_Id")
-	private CompoundRecord _record;
+	@OneToMany(mappedBy = "pk.attribute", cascade = CascadeType.ALL)
+	private Set<NumericalAttribute> numbericalAttributes = new HashSet<NumericalAttribute>();
 
-	public long get_id() {
-		return _id;
+	public long getId() {
+		return id;
 	}
 
-	public void set_id(long _id) {
-		this._id = _id;
+	public void setId(long id) {
+		this.id = id;
 	}
 
-	public String get_description() {
-		return _description;
+	public String getDescription() {
+		return description;
 	}
 
-	public void set_description(String _description) {
-		this._description = _description;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	public String get_unit() {
-		return _unit;
+	public String getUnit() {
+		return unit;
 	}
 
-	public void set_unit(String _unit) {
-		this._unit = _unit;
+	public void setUnit(String unit) {
+		this.unit = unit;
 	}
 
-	public String get_range() {
-		return _range;
+	public String getRange() {
+		return range;
 	}
 
-	public void set_range(String _range) {
-		this._range = _range;
+	public void setRange(String range) {
+		this.range = range;
 	}
 
-	public int get_type() {
-		return _type;
+	public int getType() {
+		return type;
 	}
 
-	public void set_type(int _type) {
-		this._type = _type;
+	public void setType(int type) {
+		this.type = type;
 	}
 
-	public String get_name() {
-		return _name;
+	public String getName() {
+		return name;
 	}
 
-	public void set_name(String _name) {
-		this._name = _name;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public CompoundRecord get_record() {
-		return _record;
+	public Set<NumericalAttribute> getNumbericalAttributes() {
+		return numbericalAttributes;
 	}
 
-	public void set_record(CompoundRecord _record) {
-		this._record = _record;
+	public void setNumbericalAttributes(Set<NumericalAttribute> numbericalAttributes) {
+		this.numbericalAttributes = numbericalAttributes;
 	}
+    
 	
-	
-
 }
