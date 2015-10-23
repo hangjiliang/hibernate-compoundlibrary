@@ -47,7 +47,7 @@ public class CompoundRecord {
 	@Column (name = "Description")
     private String description;
 	
-	@Column (name = "Bp")
+	@Column (name = "Bp_F")
     private double bpF = UNDEF_BOILING_POINT_F;
 	
 	@Column (name = "Response_Factor")
