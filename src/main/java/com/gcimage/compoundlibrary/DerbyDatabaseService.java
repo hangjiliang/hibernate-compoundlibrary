@@ -16,11 +16,11 @@ import com.gcimage.compoundlibrary.entity.NumericalAttribute;
 import com.gcimage.compoundlibrary.entity.NumericalAttributeId;
 
 @SuppressWarnings("deprecation")
-public class DAOService {
+public class DerbyDatabaseService {
 	
 	private SessionFactory _sessionFactory;
 	
-	public DAOService(){
+	public DerbyDatabaseService(){
 		try{
 			_sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
 	      }catch (Throwable ex) { 
@@ -29,7 +29,7 @@ public class DAOService {
 	      }
 	}
 	
-	public void add(CompoundRecord compoundRecord){
+	public void save(CompoundRecord compoundRecord){
 		Session session = _sessionFactory.openSession();
 		Transaction tx = null;
 		try{
@@ -43,7 +43,7 @@ public class DAOService {
 		}
 	}
 	
-	public void add(Attribute att){
+	public void save(Attribute att){
 		Session session = _sessionFactory.openSession();
 		Transaction tx = null;
 		try{
@@ -56,21 +56,7 @@ public class DAOService {
 			session.clear();
 		}
 	}
-	
-	public void add(NumericalAttribute recordAtt){
-		Session session = _sessionFactory.openSession();
-		Transaction tx = null;
-		try{
-			tx = session.beginTransaction();
-			session.save(recordAtt);
-			tx.commit();
-		}catch(HibernateException e){
-			e.printStackTrace();
-		}finally{
-			session.clear();
-		}
-	}
-	
+		
 	public List<CompoundRecord> getAllCompoundRecords(){
 		Session session = _sessionFactory.openSession();
 		Transaction tx = null;
