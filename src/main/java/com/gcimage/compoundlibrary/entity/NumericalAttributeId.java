@@ -4,7 +4,7 @@ import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
 
 @Embeddable
-public class NumericalAttributeId {
+public class NumericalAttributeId implements Serializable{
 	@ManyToOne
 	private CompoundRecord record;
 	
