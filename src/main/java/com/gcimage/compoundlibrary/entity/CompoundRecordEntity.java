@@ -17,7 +17,7 @@ import javax.persistence.Transient;
 
 @Entity
 @Table (name="COMPOUND")
-public class CompoundRecord {
+public class CompoundRecordEntity {
 	@Transient
 	public final static double UNDEF_BOILING_POINT_F = -460;
 	@Transient
@@ -55,14 +55,14 @@ public class CompoundRecord {
 	@Column (name = "Response_Factor")
     private double respFactor = UNDEF_RESPONSE_FACTOR; 
 	
-	@OneToMany(fetch=FetchType.EAGER, mappedBy = "compound", cascade = CascadeType.ALL)
+	@OneToMany(fetch=FetchType.LAZY, mappedBy = "compound", cascade = CascadeType.ALL)
 	private List<NumericalAttribute> numbericalAttributes = new ArrayList<NumericalAttribute>();
 	
-	public CompoundRecord(){
+	public CompoundRecordEntity(){
 		
 	}
 
-	public CompoundRecord(String name, String cas, String formula, double molWt,
+	public CompoundRecordEntity(String name, String cas, String formula, double molWt,
 			String description, double bpF, double respFactor) {
 		super();
 		this.name = name;

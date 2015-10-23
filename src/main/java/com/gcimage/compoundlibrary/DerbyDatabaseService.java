@@ -3,6 +3,7 @@ package com.gcimage.compoundlibrary;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -10,8 +11,8 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.criterion.Restrictions;
 
-import com.gcimage.compoundlibrary.entity.Attribute;
-import com.gcimage.compoundlibrary.entity.CompoundRecord;
+import com.gcimage.compoundlibrary.entity.AttributeEntity;
+import com.gcimage.compoundlibrary.entity.CompoundRecordEntity;
 import com.gcimage.compoundlibrary.entity.NumericalAttribute;
 import com.gcimage.compoundlibrary.entity.NumericalAttributeId;
 
@@ -29,7 +30,29 @@ public class DerbyDatabaseService {
 	      }
 	}
 	
-	public void save(CompoundRecord compoundRecord){
+	public SessionFactory getSessionFactory(){
+		return _sessionFactory;
+	}
+	
+	public void batchSave(List<CompoundRecord> records){	
+		Session session = _sessionFactory.openSession();
+		Transaction tx = null;
+		try{
+			tx = session.beginTransaction();
+			for(CompoundRecord r : records){
+				CompoundRecordEntity re = new CompoundRecordEntity(r.getName(), r.getCASNo(), r.getMolFormula(), r.getMolWt(), r.getDescription(), r.getTempF(), r.getRespFactor());
+				session.save(re);
+			}
+			tx.commit();
+		}catch(HibernateException e){
+			e.printStackTrace();
+		}finally{
+			session.clear();
+		}
+
+	}
+	
+	public void save(CompoundRecordEntity compoundRecord){
 		Session session = _sessionFactory.openSession();
 		Transaction tx = null;
 		try{
@@ -43,7 +66,7 @@ public class DerbyDatabaseService {
 		}
 	}
 	
-	public void save(Attribute att){
+	public void save(AttributeEntity att){
 		Session session = _sessionFactory.openSession();
 		Transaction tx = null;
 		try{
@@ -57,13 +80,13 @@ public class DerbyDatabaseService {
 		}
 	}
 		
-	public List<CompoundRecord> getAllCompoundRecords(){
+	public List<CompoundRecordEntity> getAllCompoundRecords(){
 		Session session = _sessionFactory.openSession();
 		Transaction tx = null;
 		List compoundRecords = null;
 		try{
 			tx = session.beginTransaction();
-			compoundRecords = session.createQuery("FROM CompoundRecord").list();
+			compoundRecords = session.createQuery("FROM CompoundRecordEntity").list();
 			tx.commit();
 		}catch(HibernateException e){
 			e.printStackTrace();
@@ -73,7 +96,7 @@ public class DerbyDatabaseService {
 		return compoundRecords;
 	}
 	
-	public List<Attribute> getAllNumericalAttributes(){
+	public List<AttributeEntity> getAllNumericalAttributes(){
 		Session session = _sessionFactory.openSession();
 		Transaction tx = null;
 		List numAttributes = null;
@@ -89,13 +112,13 @@ public class DerbyDatabaseService {
 		return numAttributes;
 	}
 	
-	public List<Attribute> getAllAttributes(){
+	public List<AttributeEntity> getAllAttributes(){
 		Session session = _sessionFactory.openSession();
 		Transaction tx = null;
 		List attributes = null;
 		try{
 			tx = session.beginTransaction();
-			attributes = session.createQuery("FROM Attribute").list();
+			attributes = session.createQuery("FROM AttributeEntity").list();
 			tx.commit();
 		}catch(HibernateException e){
 			e.printStackTrace();
@@ -105,14 +128,15 @@ public class DerbyDatabaseService {
 		return attributes;
 	}
 		
-	public CompoundRecord findByCompoundName(String compoundName){
+	public CompoundRecordEntity findByCompoundName(String compoundName){
 		Session session = _sessionFactory.openSession();
 		Transaction tx = null;
-		CompoundRecord record = null;
+		CompoundRecordEntity record = null;
 		try{
 			tx = session.beginTransaction();
-			Criteria criteria = session.createCriteria(CompoundRecord.class);
-			record = (CompoundRecord) criteria.add(Restrictions.eq("name", compoundName)).uniqueResult();
+			Criteria criteria = session.createCriteria(CompoundRecordEntity.class);
+			record = (CompoundRecordEntity) criteria.add(Restrictions.eq("name", compoundName)).uniqueResult();
+			Hibernate.initialize(record.getNumbericalAttributes());
 			tx.commit();
 		}catch(HibernateException e){
 			e.printStackTrace();
@@ -122,14 +146,14 @@ public class DerbyDatabaseService {
 		return record;
 	}
 	
-	public Attribute findByAttributeName(String attributeName){
+	public AttributeEntity findByAttributeName(String attributeName){
 		Session session = _sessionFactory.openSession();
 		Transaction tx = null;
-		Attribute att = null;
+		AttributeEntity att = null;
 		try{
 			tx = session.beginTransaction();
-			Criteria criteria = session.createCriteria(Attribute.class);
-			att = (Attribute) criteria.add(Restrictions.eq("name", attributeName)).uniqueResult();
+			Criteria criteria = session.createCriteria(AttributeEntity.class);
+			att = (AttributeEntity) criteria.add(Restrictions.eq("name", attributeName)).uniqueResult();
 			tx.commit();
 		}catch(HibernateException e){
 			e.printStackTrace();
@@ -139,14 +163,14 @@ public class DerbyDatabaseService {
 		return att;
 	}
 	
-	public void updateCompoundRecord(CompoundRecord newRecord){
+	public void updateCompoundRecord(CompoundRecordEntity newRecord){
 		Session session = _sessionFactory.openSession();
 		Transaction tx = null;
-		CompoundRecord record = null;
+		CompoundRecordEntity record = null;
 		try{
 			tx = session.beginTransaction();
-			Criteria criteria = session.createCriteria(CompoundRecord.class);
-			record = (CompoundRecord) criteria.add(Restrictions.eq("name", newRecord.getName())).uniqueResult();
+			Criteria criteria = session.createCriteria(CompoundRecordEntity.class);
+			record = (CompoundRecordEntity) criteria.add(Restrictions.eq("name", newRecord.getName())).uniqueResult();
 			if(record != null){
 				record.setCas(newRecord.getCas());
 				record.setDescription(newRecord.getDescription());
@@ -167,14 +191,14 @@ public class DerbyDatabaseService {
 		}
 	}
 	
-	public void updateAttribute(Attribute newAtt){
+	public void updateAttribute(AttributeEntity newAtt){
 		Session session = _sessionFactory.openSession();
 		Transaction tx = null;
-		Attribute att = null;
+		AttributeEntity att = null;
 		try{
 			tx = session.beginTransaction();
-			Criteria criteria = session.createCriteria(Attribute.class);
-			att = (Attribute) criteria.add(Restrictions.eq("name", newAtt.getName())).uniqueResult();
+			Criteria criteria = session.createCriteria(AttributeEntity.class);
+			att = (AttributeEntity) criteria.add(Restrictions.eq("name", newAtt.getName())).uniqueResult();
 			if(att != null){
 				att.setDescription(newAtt.getDescription());
 				att.setName(newAtt.getName());
@@ -194,9 +218,9 @@ public class DerbyDatabaseService {
 	}
 	
 	public void updateValue(String compoundName, String attName, double value){
-		CompoundRecord record = findByCompoundName(compoundName);
+		CompoundRecordEntity record = findByCompoundName(compoundName);
 		if(record != null){
-			Attribute att = findByAttributeName(attName);
+			AttributeEntity att = findByAttributeName(attName);
 			if(att != null){
 				NumericalAttributeId pk = new NumericalAttributeId();
 				pk.setAttribute(att.getId());
@@ -229,10 +253,10 @@ public class DerbyDatabaseService {
 	public void delete(String compoundName){
 		Session session = _sessionFactory.openSession();
 		Transaction tx = null;
-		CompoundRecord record = null;
+		CompoundRecordEntity record = null;
 		try{
 			tx = session.beginTransaction();
-			record  = (CompoundRecord) session.get(CompoundRecord.class, compoundName);
+			record  = (CompoundRecordEntity) session.get(CompoundRecordEntity.class, compoundName);
 			session.delete(record);
 			tx.commit();
 		}catch(HibernateException e){

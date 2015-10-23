@@ -16,12 +16,12 @@ public class NumericalAttribute {
 	@Id
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "Compound_Id", referencedColumnName = "Id")
-	private CompoundRecord compound;
+	private CompoundRecordEntity compound;
 	
 	@Id
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "Attribute_Id", referencedColumnName = "Id")
-	private Attribute attribute;
+	private AttributeEntity attribute;
 	
 	@Column(name = "Value")
 	private double value;
@@ -30,7 +30,7 @@ public class NumericalAttribute {
 		
 	}
 
-	public NumericalAttribute(CompoundRecord compound, Attribute attribute,
+	public NumericalAttribute(CompoundRecordEntity compound, AttributeEntity attribute,
 			double value) {
 		super();
 		this.compound = compound;
@@ -38,19 +38,19 @@ public class NumericalAttribute {
 		this.value = value;
 	}
 
-	public CompoundRecord getCompound() {
+	public CompoundRecordEntity getCompound() {
 		return compound;
 	}
 
-	public void setCompound(CompoundRecord compound) {
+	public void setCompound(CompoundRecordEntity compound) {
 		this.compound = compound;
 	}
 
-	public Attribute getAttribute() {
+	public AttributeEntity getAttribute() {
 		return attribute;
 	}
 
-	public void setAttribute(Attribute attribute) {
+	public void setAttribute(AttributeEntity attribute) {
 		this.attribute = attribute;
 	}
 

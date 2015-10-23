@@ -18,7 +18,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table (name="ATTRIBUTE")
-public class Attribute {
+public class AttributeEntity {
 	@Id
 	@GeneratedValue
 	@Column (name = "Id")
@@ -39,14 +39,14 @@ public class Attribute {
 	@Column (name = "Name", unique=true)
 	private String name;
 	
-	@OneToMany(fetch=FetchType.EAGER, mappedBy = "attribute", cascade = CascadeType.ALL)
+	@OneToMany(fetch=FetchType.LAZY, mappedBy = "attribute", cascade = CascadeType.ALL)
 	private List<NumericalAttribute> numbericalAttributes = new ArrayList<NumericalAttribute>();
 	
-	public Attribute(){
+	public AttributeEntity(){
 		
 	}
 
-	public Attribute(String name, int type, String range, String unit, String description) {
+	public AttributeEntity(String name, int type, String range, String unit, String description) {
 		super();
 		this.description = description;
 		this.unit = unit;
