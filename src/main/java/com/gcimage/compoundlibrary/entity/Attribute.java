@@ -17,9 +17,9 @@ import javax.persistence.Table;
 @Entity
 @Table (name="ATTRIBUTE")
 public class Attribute {
-	@Column (name = "Attribute_Id")
 	@Id
 	@GeneratedValue
+	@Column (name = "Attribute_Id")
 	private long id;
 	
 	@Column (name = "Description")

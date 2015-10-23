@@ -2,15 +2,16 @@ package com.gcimage.compoundlibrary.entity;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
 
 @Embeddable
 public class NumericalAttributeId implements Serializable{
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	private CompoundRecord record;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Attribute attribute;
 
 	public CompoundRecord getRecord() {
@@ -28,7 +29,5 @@ public class NumericalAttributeId implements Serializable{
 	public void setAttribute(Attribute attribute) {
 		this.attribute = attribute;
 	}
-
-	
 	
 }

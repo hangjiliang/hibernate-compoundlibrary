@@ -9,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -28,9 +27,9 @@ public class CompoundRecord {
 	@Transient
 	public final static String UNDEF_CAS_NUMBER = "-";
 	
-	@Column (name = "Compound_Id")
 	@Id
 	@GeneratedValue
+	@Column (name = "Compound_Id")
 	private long id;
 	
 	@Column (name = "Name")
@@ -48,7 +47,7 @@ public class CompoundRecord {
 	@Column (name = "Description")
     private String description;
 	
-	@Column (name = "Bp(F)")
+	@Column (name = "Bp")
     private double bpF = UNDEF_BOILING_POINT_F;
 	
 	@Column (name = "Response_Factor")
