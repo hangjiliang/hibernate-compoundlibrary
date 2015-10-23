@@ -1,6 +1,8 @@
 package com.gcimage.compoundlibrary.entity;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -29,10 +31,10 @@ public class CompoundRecord {
 	
 	@Id
 	@GeneratedValue
-	@Column (name = "Compound_Id")
-	private long id;
+	@Column (name = "Id")
+	private int id;
 	
-	@Column (name = "Name")
+	@Column (name = "Name", unique=true)
     private String name;
 	
 	@Column (name = "CAS")
@@ -53,14 +55,30 @@ public class CompoundRecord {
 	@Column (name = "Response_Factor")
     private double respFactor = UNDEF_RESPONSE_FACTOR; 
 	
-	@OneToMany(mappedBy = "pk.record", cascade = CascadeType.ALL)
-	private Set<NumericalAttribute> numbericalAttributes = new HashSet<NumericalAttribute>();
+	@OneToMany(fetch=FetchType.EAGER, mappedBy = "compound", cascade = CascadeType.ALL)
+	private List<NumericalAttribute> numbericalAttributes = new ArrayList<NumericalAttribute>();
+	
+	public CompoundRecord(){
+		
+	}
 
-	public long getId() {
+	public CompoundRecord(String name, String cas, String formula, double molWt,
+			String description, double bpF, double respFactor) {
+		super();
+		this.name = name;
+		this.cas = cas;
+		this.molWt = molWt;
+		this.formula = formula;
+		this.description = description;
+		this.bpF = bpF;
+		this.respFactor = respFactor;
+	}
+
+	public int getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -120,13 +138,12 @@ public class CompoundRecord {
 		this.respFactor = respFactor;
 	}
 
-	public Set<NumericalAttribute> getAttributes() {
+	public List<NumericalAttribute> getNumbericalAttributes() {
 		return numbericalAttributes;
 	}
 
-	public void setAttributes(Set<NumericalAttribute> attributes) {
-		this.numbericalAttributes = attributes;
+	public void setNumbericalAttributes(List<NumericalAttribute> numbericalAttributes) {
+		this.numbericalAttributes = numbericalAttributes;
 	}
-
 	
 }

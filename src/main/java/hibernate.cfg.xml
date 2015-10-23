@@ -15,6 +15,5 @@
             <mapping class="com.gcimage.compoundlibrary.entity.CompoundRecord"/>
             <mapping class="com.gcimage.compoundlibrary.entity.Attribute"/>
             <mapping class="com.gcimage.compoundlibrary.entity.NumericalAttribute"/>
-            <mapping class="com.gcimage.compoundlibrary.entity.NumericalAttributeId"/>
         </session-factory>
     </hibernate-configuration>

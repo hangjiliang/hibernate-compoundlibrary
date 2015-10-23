@@ -1,6 +1,8 @@
 package com.gcimage.compoundlibrary.entity;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -19,8 +21,8 @@ import javax.persistence.Table;
 public class Attribute {
 	@Id
 	@GeneratedValue
-	@Column (name = "Attribute_Id")
-	private long id;
+	@Column (name = "Id")
+	private int id;
 	
 	@Column (name = "Description")
 	private String description;
@@ -34,17 +36,30 @@ public class Attribute {
 	@Column (name = "Type")
 	private int type;
 	
-	@Column (name = "Name")
+	@Column (name = "Name", unique=true)
 	private String name;
 	
-	@OneToMany(mappedBy = "pk.attribute", cascade = CascadeType.ALL)
-	private Set<NumericalAttribute> numbericalAttributes = new HashSet<NumericalAttribute>();
+	@OneToMany(fetch=FetchType.EAGER, mappedBy = "attribute", cascade = CascadeType.ALL)
+	private List<NumericalAttribute> numbericalAttributes = new ArrayList<NumericalAttribute>();
+	
+	public Attribute(){
+		
+	}
 
-	public long getId() {
+	public Attribute(String name, int type, String range, String unit, String description) {
+		super();
+		this.description = description;
+		this.unit = unit;
+		this.range = range;
+		this.type = type;
+		this.name = name;
+	}
+
+	public int getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -88,11 +103,11 @@ public class Attribute {
 		this.name = name;
 	}
 
-	public Set<NumericalAttribute> getNumbericalAttributes() {
+	public List<NumericalAttribute> getNumbericalAttributes() {
 		return numbericalAttributes;
 	}
 
-	public void setNumbericalAttributes(Set<NumericalAttribute> numbericalAttributes) {
+	public void setNumbericalAttributes(List<NumericalAttribute> numbericalAttributes) {
 		this.numbericalAttributes = numbericalAttributes;
 	}
     

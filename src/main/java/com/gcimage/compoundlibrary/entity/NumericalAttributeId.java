@@ -2,32 +2,43 @@ package com.gcimage.compoundlibrary.entity;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Embeddable;
-import javax.persistence.ManyToOne;
-
-@Embeddable
 public class NumericalAttributeId implements Serializable{
-	@ManyToOne(cascade = CascadeType.ALL)
-	private CompoundRecord record;
-	
-	@ManyToOne(cascade = CascadeType.ALL)
-	private Attribute attribute;
-
-	public CompoundRecord getRecord() {
-		return record;
+	private int compound;
+	private int attribute;
+	public int getCompound() {
+		return compound;
 	}
-
-	public void setRecord(CompoundRecord record) {
-		this.record = record;
+	public void setCompound(int compound) {
+		this.compound = compound;
 	}
-
-	public Attribute getAttribute() {
+	public int getAttribute() {
 		return attribute;
 	}
-
-	public void setAttribute(Attribute attribute) {
+	public void setAttribute(int attribute) {
 		this.attribute = attribute;
+	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + attribute;
+		result = prime * result + compound;
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		NumericalAttributeId other = (NumericalAttributeId) obj;
+		if (attribute != other.attribute)
+			return false;
+		if (compound != other.compound)
+			return false;
+		return true;
 	}
 	
 }
