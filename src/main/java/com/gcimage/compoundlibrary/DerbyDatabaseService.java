@@ -154,6 +154,7 @@ public class DerbyDatabaseService {
 			tx = session.beginTransaction();
 			Criteria criteria = session.createCriteria(AttributeEntity.class);
 			att = (AttributeEntity) criteria.add(Restrictions.eq("name", attributeName)).uniqueResult();
+			Hibernate.initialize(att.getNumbericalAttributes());
 			tx.commit();
 		}catch(HibernateException e){
 			e.printStackTrace();
